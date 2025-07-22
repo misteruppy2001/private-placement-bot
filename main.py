@@ -66,11 +66,12 @@ async def check_private_placements():
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
-
+    channel = client.get_channel(CHANNEL_ID)
+    asyncio.create_task(channel.send("✅ Test message from Private Placement Bot — we're live!"))
 
 @client.event
 async def setup_hook():
     client.loop.create_task(check_private_placements())
 
-
 client.run(TOKEN)
+
