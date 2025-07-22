@@ -1,4 +1,3 @@
-
 import os
 import discord
 import requests
@@ -16,7 +15,7 @@ posted_links = set()
 async def check_private_placements():
     await client.wait_until_ready()
     channel = client.get_channel(CHANNEL_ID)
-    
+
     while not client.is_closed():
         try:
             url = 'https://www.privateplacements.com/financings'
@@ -25,7 +24,7 @@ async def check_private_placements():
             soup = BeautifulSoup(response.content, 'html.parser')
 
             rows = soup.select('table tbody tr')
-            
+
             for row in rows:
                 cells = row.find_all('td')
                 if len(cells) < 6:
@@ -63,9 +62,15 @@ async def check_private_placements():
 
         await asyncio.sleep(600)  # Wait 10 minutes
 
+
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
 
-client.loop.create_task(check_private_placements())
+
+@client.event
+async def setup_hook():
+    client.loop.create_task(check_private_placements())
+
+
 client.run(TOKEN)
